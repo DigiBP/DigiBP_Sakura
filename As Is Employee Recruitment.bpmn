@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1ovv1dx" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="3.7.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1ovv1dx" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="3.7.0">
   <bpmn:collaboration id="Collaboration_0a8tme4">
     <bpmn:participant id="Participant_124dfrn" name="Company" processRef="Process_118sy31" />
     <bpmn:participant id="Participant_16w2urq" name="Applicant" processRef="Process_0naysew" />
@@ -9,8 +9,8 @@
       <bpmn:lane id="Lane_03jd67g" name="Line Manager">
         <bpmn:flowNodeRef>StartEvent_1</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_0o6r1qv</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_19s3nr3</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_0thdq4p</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_19s3nr3</bpmn:flowNodeRef>
       </bpmn:lane>
       <bpmn:lane id="Lane_14o1vz5" name="HR">
         <bpmn:flowNodeRef>Event_1j0luhg</bpmn:flowNodeRef>
@@ -24,7 +24,7 @@
       <bpmn:incoming>Flow_08td5ud</bpmn:incoming>
       <bpmn:incoming>Flow_1azq3m5</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:userTask id="Activity_0pzb1ba" name="Job posted">
+    <bpmn:userTask id="Activity_0pzb1ba" name="Job posted" camunda:assignee="HRrep">
       <bpmn:incoming>Flow_0vr84x2</bpmn:incoming>
       <bpmn:outgoing>Flow_0m4giy4</bpmn:outgoing>
     </bpmn:userTask>
@@ -33,11 +33,11 @@
       <bpmn:outgoing>Flow_0n69hp9</bpmn:outgoing>
       <bpmn:outgoing>Flow_0cyjxjo</bpmn:outgoing>
     </bpmn:manualTask>
-    <bpmn:userTask id="Activity_1xbvn3p" name="Conducting interviews and finalizing candidates">
+    <bpmn:userTask id="Activity_1xbvn3p" name="Conducting interviews and finalizing candidates" camunda:assignee="HRrep">
       <bpmn:incoming>Flow_0n69hp9</bpmn:incoming>
       <bpmn:outgoing>Flow_1iwucxj</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:userTask id="Activity_0n81upw" name="Contract negotiations">
+    <bpmn:userTask id="Activity_0n81upw" name="Contract negotiations" camunda:assignee="HRrep">
       <bpmn:incoming>Flow_1iwucxj</bpmn:incoming>
       <bpmn:outgoing>Flow_1azq3m5</bpmn:outgoing>
       <bpmn:dataOutputAssociation id="DataOutputAssociation_0aary3x">
@@ -53,21 +53,21 @@
     <bpmn:startEvent id="StartEvent_1" name="New role created">
       <bpmn:outgoing>Flow_0vr84x2</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:userTask id="Activity_0o6r1qv" name="Shortlisting of applicants">
+    <bpmn:userTask id="Activity_0o6r1qv" name="Shortlisting of applicants" camunda:assignee="LineManager">
       <bpmn:incoming>Flow_0m4giy4</bpmn:incoming>
       <bpmn:outgoing>Flow_0t7815o</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_0cyjxjo" sourceRef="Activity_0r9sn9x" targetRef="Activity_19s3nr3" />
-    <bpmn:task id="Activity_19s3nr3" name="Conducting interviews and finalizing candidates">
-      <bpmn:incoming>Flow_0cyjxjo</bpmn:incoming>
-      <bpmn:outgoing>Flow_1sgiv7q</bpmn:outgoing>
-    </bpmn:task>
     <bpmn:sequenceFlow id="Flow_1sgiv7q" sourceRef="Activity_19s3nr3" targetRef="Activity_0thdq4p" />
-    <bpmn:userTask id="Activity_0thdq4p" name="Onboarding">
+    <bpmn:userTask id="Activity_0thdq4p" name="Onboarding" camunda:assignee="LineManager">
       <bpmn:incoming>Flow_1sgiv7q</bpmn:incoming>
       <bpmn:outgoing>Flow_08td5ud</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_1azq3m5" sourceRef="Activity_0n81upw" targetRef="Event_1j0luhg" />
+    <bpmn:userTask id="Activity_19s3nr3" name="Conducting interviews and finalizing candidates" camunda:assignee="LineManager">
+      <bpmn:incoming>Flow_0cyjxjo</bpmn:incoming>
+      <bpmn:outgoing>Flow_1sgiv7q</bpmn:outgoing>
+    </bpmn:userTask>
   </bpmn:process>
   <bpmn:process id="Process_0naysew" isExecutable="false">
     <bpmn:dataObjectReference id="Flow_0azhecu" name="Contract" dataObjectRef="Flow_0k8upgg" />
@@ -159,9 +159,6 @@
       <bpmndi:BPMNShape id="Lane_14o1vz5_di" bpmnElement="Lane_14o1vz5" isHorizontal="true">
         <dc:Bounds x="150" y="198" width="1080" height="182" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_19s3nr3_di" bpmnElement="Activity_19s3nr3">
-        <dc:Bounds x="750" y="90" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_0cyjxjo_di" bpmnElement="Flow_0cyjxjo">
         <di:waypoint x="700" y="270" />
         <di:waypoint x="730" y="270" />
@@ -176,6 +173,9 @@
         <di:waypoint x="1000" y="270" />
         <di:waypoint x="1172" y="270" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1x8sq9o_di" bpmnElement="Activity_19s3nr3">
+        <dc:Bounds x="750" y="90" width="100" height="80" />
+      </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>
