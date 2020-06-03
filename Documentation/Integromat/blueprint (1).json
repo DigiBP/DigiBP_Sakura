@@ -1,0 +1,800 @@
+{
+    "name": "RecruitmentAssistant",
+    "flow": [
+        {
+            "id": 1,
+            "module": "gateway:CustomWebHook",
+            "version": 1,
+            "parameters": {
+                "hook": 406941,
+                "maxResults": 2
+            },
+            "mapper": {},
+            "metadata": {
+                "designer": {
+                    "x": 91,
+                    "y": -225
+                },
+                "restore": {
+                    "hook": {
+                        "label": "My gateway-webhook1"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "hook",
+                        "label": "Webhook",
+                        "type": "hook",
+                        "required": true
+                    },
+                    {
+                        "name": "maxResults",
+                        "label": "Maximum number of results",
+                        "type": "number"
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "responseId",
+                        "type": "text"
+                    },
+                    {
+                        "name": "queryResult",
+                        "type": "collection",
+                        "spec": [
+                            {
+                                "name": "queryText",
+                                "type": "text"
+                            },
+                            {
+                                "name": "parameters",
+                                "type": "collection",
+                                "spec": [
+                                    {
+                                        "name": "Jobtitle",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "Name",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "Country",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "Emailaddress",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "Skillinfo",
+                                        "type": "array",
+                                        "spec": {
+                                            "type": "text"
+                                        }
+                                    },
+                                    {
+                                        "name": "Permit",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "allRequiredParamsPresent",
+                                "type": "boolean"
+                            },
+                            {
+                                "name": "fulfillmentText",
+                                "type": "text"
+                            },
+                            {
+                                "name": "fulfillmentMessages",
+                                "type": "array",
+                                "spec": {
+                                    "type": "collection",
+                                    "spec": [
+                                        {
+                                            "name": "text",
+                                            "type": "collection",
+                                            "spec": [
+                                                {
+                                                    "name": "text",
+                                                    "type": "array",
+                                                    "spec": {
+                                                        "type": "text"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "name": "outputContexts",
+                                "type": "array",
+                                "spec": {
+                                    "type": "collection",
+                                    "spec": [
+                                        {
+                                            "name": "name",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "name": "parameters",
+                                            "type": "collection",
+                                            "spec": [
+                                                {
+                                                    "name": "no-input",
+                                                    "type": "number"
+                                                },
+                                                {
+                                                    "name": "no-match",
+                                                    "type": "number"
+                                                },
+                                                {
+                                                    "name": "Jobtitle",
+                                                    "type": "text"
+                                                },
+                                                {
+                                                    "name": "Jobtitle.original",
+                                                    "type": "text"
+                                                },
+                                                {
+                                                    "name": "Name",
+                                                    "type": "text"
+                                                },
+                                                {
+                                                    "name": "Name.original",
+                                                    "type": "text"
+                                                },
+                                                {
+                                                    "name": "Country",
+                                                    "type": "text"
+                                                },
+                                                {
+                                                    "name": "Country.original",
+                                                    "type": "text"
+                                                },
+                                                {
+                                                    "name": "Emailaddress",
+                                                    "type": "text"
+                                                },
+                                                {
+                                                    "name": "Emailaddress.original",
+                                                    "type": "text"
+                                                },
+                                                {
+                                                    "name": "Skillinfo",
+                                                    "type": "array",
+                                                    "spec": {
+                                                        "type": "text"
+                                                    }
+                                                },
+                                                {
+                                                    "name": "Skillinfo.original",
+                                                    "type": "array",
+                                                    "spec": {
+                                                        "type": "text"
+                                                    }
+                                                },
+                                                {
+                                                    "name": "Permit",
+                                                    "type": "text"
+                                                },
+                                                {
+                                                    "name": "Permit.original",
+                                                    "type": "text"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "name": "intent",
+                                "type": "collection",
+                                "spec": [
+                                    {
+                                        "name": "name",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "displayName",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "intentDetectionConfidence",
+                                "type": "number"
+                            },
+                            {
+                                "name": "languageCode",
+                                "type": "text"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "originalDetectIntentRequest",
+                        "type": "collection",
+                        "spec": [
+                            {
+                                "name": "payload",
+                                "type": "collection",
+                                "spec": []
+                            }
+                        ]
+                    },
+                    {
+                        "name": "session",
+                        "type": "text"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 2,
+            "module": "google-sheets:addRow",
+            "version": 2,
+            "parameters": {
+                "__IMTCONN__": 1259614
+            },
+            "mapper": {
+                "mode": "select",
+                "valueInputOption": "USER_ENTERED",
+                "insertDataOption": "INSERT_ROWS",
+                "spreadsheetId": "12YLb08DBI6vxIgrXpuvbe7dlthDZMRZcWsU1oKU8EQM",
+                "sheetId": "Form Responses 1",
+                "includesHeaders": true,
+                "values": {
+                    "2": "{{timestamp}}",
+                    "3": "{{1.queryResult.parameters.Jobtitle}}",
+                    "4": "{{1.queryResult.parameters.Name}}",
+                    "5": "{{1.queryResult.parameters.Country}}",
+                    "6": "{{1.queryResult.parameters.Permit}}",
+                    "7": "{{1.queryResult.parameters.Skillinfo}}",
+                    "11": "{{1.queryResult.parameters.Emailaddress}}",
+                    "12": "{{1.queryResult.parameters.Phonenumber}}",
+                    "14": "{{1.queryResult.parameters.Joblevel}}",
+                    "20": "{{()}}"
+                }
+            },
+            "metadata": {
+                "designer": {
+                    "x": 458,
+                    "y": -222
+                },
+                "restore": {
+                    "__IMTCONN__": {
+                        "label": "Recruitment-Assistant (sakurafhnw@gmail.com)"
+                    },
+                    "mode": {
+                        "label": "Select spreadsheet and sheet"
+                    },
+                    "valueInputOption": {
+                        "mode": "chose",
+                        "label": "User entered"
+                    },
+                    "insertDataOption": {
+                        "mode": "chose",
+                        "label": "Insert rows"
+                    },
+                    "spreadsheetId": {
+                        "label": "Sakura Applicants (Responses)"
+                    },
+                    "sheetId": {
+                        "label": "Form Responses 1"
+                    },
+                    "includesHeaders": {
+                        "label": "Yes"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "mode",
+                        "type": "select",
+                        "label": "Mode",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "select",
+                                "map"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "valueInputOption",
+                        "type": "select",
+                        "label": "Value input option",
+                        "validate": {
+                            "enum": [
+                                "USER_ENTERED",
+                                "RAW"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "insertDataOption",
+                        "type": "select",
+                        "label": "Insert data option",
+                        "validate": {
+                            "enum": [
+                                "INSERT_ROWS",
+                                "OVERWRITE"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "spreadsheetId",
+                        "type": "select",
+                        "label": "Spreadsheet",
+                        "required": true
+                    },
+                    {
+                        "name": "sheetId",
+                        "type": "select",
+                        "label": "Sheet",
+                        "required": true
+                    },
+                    {
+                        "name": "includesHeaders",
+                        "type": "select",
+                        "label": "Table contains headers",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                true,
+                                false
+                            ]
+                        }
+                    },
+                    {
+                        "name": "values",
+                        "type": "collection",
+                        "label": "Values",
+                        "spec": [
+                            {
+                                "name": "0",
+                                "label": "Score+Timestamp (A)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "1",
+                                "label": "RoleStamp (B)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "2",
+                                "label": "Timestamp (C)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "3",
+                                "label": "Which role are you applying for? (D)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "4",
+                                "label": "What's your name? (E)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "5",
+                                "label": "Which country do you live in? (F)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "6",
+                                "label": "Would you have the right to a Visa for the job location, if required? (G)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "7",
+                                "label": "Please describe your top 5 skills that make you suitable for this job. Separate your skills with a comma. (H)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "8",
+                                "label": "(I)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "9",
+                                "label": "(J)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "10",
+                                "label": "(K)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "11",
+                                "label": "What's your email address? (L)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "12",
+                                "label": "What's your telephone number? (M)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "13",
+                                "label": "Score (N)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "14",
+                                "label": "Level (O)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "15",
+                                "label": "Skill 1 (P)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "16",
+                                "label": "Skill 2 (Q)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "17",
+                                "label": "Skill 3 (R)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "18",
+                                "label": "Skill 4 (S)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "19",
+                                "label": "Skill 5 (T)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "20",
+                                "label": "Skill Requirement 1 (U)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "21",
+                                "label": "Skill Requirement 2 (V)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "22",
+                                "label": "Skill Requirement 3 (W)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "23",
+                                "label": "Skill Requirement 4 (X)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "24",
+                                "label": "Skill Requirement 5 (Y)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "25",
+                                "label": "Skill Requirement 6 (Z)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "26",
+                                "label": "Status (AA)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "27",
+                                "label": "(AB)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "28",
+                                "label": "(AC)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "29",
+                                "label": "(AD)",
+                                "type": "text"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "id": 12,
+            "module": "google-sheets:updateRow",
+            "version": 2,
+            "parameters": {
+                "__IMTCONN__": 1259614
+            },
+            "mapper": {
+                "mode": "select",
+                "valueInputOption": "USER_ENTERED",
+                "spreadsheetId": "12YLb08DBI6vxIgrXpuvbe7dlthDZMRZcWsU1oKU8EQM",
+                "sheetId": "Form Responses 1",
+                "rowNumber": "{{2.rowNumber}}",
+                "includesHeaders": true,
+                "values": {}
+            },
+            "metadata": {
+                "designer": {
+                    "x": 758,
+                    "y": -222
+                },
+                "restore": {
+                    "__IMTCONN__": {
+                        "label": "Recruitment-Assistant (sakurafhnw@gmail.com)"
+                    },
+                    "mode": {
+                        "label": "Select spreadsheet and sheet"
+                    },
+                    "valueInputOption": {
+                        "mode": "chose",
+                        "label": "User entered"
+                    },
+                    "spreadsheetId": {
+                        "label": "Sakura Applicants (Responses)"
+                    },
+                    "sheetId": {
+                        "label": "Form Responses 1"
+                    },
+                    "includesHeaders": {
+                        "label": "Yes"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "mode",
+                        "type": "select",
+                        "label": "Mode",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "select",
+                                "map"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "valueInputOption",
+                        "type": "select",
+                        "label": "Value input option",
+                        "validate": {
+                            "enum": [
+                                "USER_ENTERED",
+                                "RAW"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "spreadsheetId",
+                        "type": "select",
+                        "label": "Spreadsheet",
+                        "required": true
+                    },
+                    {
+                        "name": "sheetId",
+                        "type": "select",
+                        "label": "Sheet",
+                        "required": true
+                    },
+                    {
+                        "name": "rowNumber",
+                        "type": "uinteger",
+                        "label": "Row number",
+                        "required": true
+                    },
+                    {
+                        "name": "includesHeaders",
+                        "type": "select",
+                        "label": "Table contains headers",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                true,
+                                false
+                            ]
+                        }
+                    },
+                    {
+                        "name": "values",
+                        "type": "collection",
+                        "label": "Values",
+                        "spec": [
+                            {
+                                "name": "0",
+                                "label": "Score+Timestamp (A)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "1",
+                                "label": "RoleStamp (B)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "2",
+                                "label": "Timestamp (C)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "3",
+                                "label": "Which role are you applying for? (D)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "4",
+                                "label": "What's your name? (E)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "5",
+                                "label": "Which country do you live in? (F)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "6",
+                                "label": "Would you have the right to a Visa for the job location, if required? (G)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "7",
+                                "label": "Please describe your top 5 skills that make you suitable for this job. Separate your skills with a comma. (H)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "8",
+                                "label": "(I)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "9",
+                                "label": "(J)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "10",
+                                "label": "(K)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "11",
+                                "label": "What's your email address? (L)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "12",
+                                "label": "What's your telephone number? (M)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "13",
+                                "label": "Score (N)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "14",
+                                "label": "Level (O)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "15",
+                                "label": "Skill 1 (P)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "16",
+                                "label": "Skill 2 (Q)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "17",
+                                "label": "Skill 3 (R)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "18",
+                                "label": "Skill 4 (S)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "19",
+                                "label": "Skill 5 (T)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "20",
+                                "label": "Skill Requirement 1 (U)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "21",
+                                "label": "Skill Requirement 2 (V)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "22",
+                                "label": "Skill Requirement 3 (W)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "23",
+                                "label": "Skill Requirement 4 (X)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "24",
+                                "label": "Skill Requirement 5 (Y)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "25",
+                                "label": "Skill Requirement 6 (Z)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "26",
+                                "label": "Status (AA)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "27",
+                                "label": "(AB)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "28",
+                                "label": "(AC)",
+                                "type": "text"
+                            },
+                            {
+                                "name": "29",
+                                "label": "(AD)",
+                                "type": "text"
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ],
+    "metadata": {
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 3,
+            "autoCommit": false,
+            "sequential": false,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false
+        },
+        "designer": {
+            "orphans": []
+        },
+        "zone": "eu1.integromat.com"
+    }
+}
