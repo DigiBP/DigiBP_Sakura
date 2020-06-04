@@ -1,0 +1,281 @@
+{
+    "name": "7. Generate Contract",
+    "flow": [
+        {
+            "id": 1,
+            "module": "gateway:CustomWebHook",
+            "version": 1,
+            "parameters": {
+                "hook": 410702,
+                "maxResults": 2
+            },
+            "mapper": {},
+            "metadata": {
+                "designer": {
+                    "x": -234,
+                    "y": -4
+                },
+                "restore": {
+                    "hook": {
+                        "label": "Send contract"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "hook",
+                        "type": "hook",
+                        "label": "Webhook",
+                        "required": true
+                    },
+                    {
+                        "name": "maxResults",
+                        "type": "number",
+                        "label": "Maximum number of results"
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "name",
+                        "type": "text"
+                    },
+                    {
+                        "name": "email",
+                        "type": "text"
+                    },
+                    {
+                        "name": "salary",
+                        "type": "text"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 2,
+            "module": "eledo:Generate",
+            "version": 1,
+            "parameters": {
+                "__IMTCONN__": 1274750
+            },
+            "mapper": {
+                "fields": {
+                    "name": "{{1.name}}",
+                    "salary": "{{1.salary}}"
+                },
+                "templateId": "5ed7813cbb82ab218f7aac9d"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 66,
+                    "y": -4
+                },
+                "restore": {
+                    "templateId": {
+                        "label": "SakuraContract"
+                    },
+                    "__IMTCONN__": {
+                        "label": "My Eledo connection (sakurafhnw@gmail.com)"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "templateId",
+                        "type": "select",
+                        "label": "Template"
+                    },
+                    {
+                        "name": "fields",
+                        "spec": [
+                            {
+                                "name": "name",
+                                "type": "text"
+                            },
+                            {
+                                "name": "salary",
+                                "type": "text"
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Custom Fields"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 3,
+            "module": "google-email:ActionSendEmail",
+            "version": 2,
+            "parameters": {
+                "account": 1265731
+            },
+            "mapper": {
+                "cc": [],
+                "to": [
+                    "{{1.email}}"
+                ],
+                "bcc": [],
+                "from": "",
+                "html": "Dear {{1.name}},\n<br><br>\nWe're delighted that you've come to an agreement to join Team Sakura. Please find attached a copy of your contract, which along with the general terms of employment you received at your interview, should be signed and returned to us no later than 1 week before your scheduled commencement date.\n<br><br>\nMany thanks,\nThe Sakura Team",
+                "subject": "Your Sakura Contract",
+                "attachments": [
+                    {
+                        "cid": "",
+                        "data": "{{2.data}}",
+                        "fileName": "{{2.fileName}}"
+                    }
+                ]
+            },
+            "metadata": {
+                "designer": {
+                    "x": 366,
+                    "y": -4
+                },
+                "restore": {
+                    "cc": {
+                        "mode": "chose",
+                        "items": []
+                    },
+                    "to": {
+                        "mode": "chose",
+                        "items": [
+                            "undefined"
+                        ]
+                    },
+                    "bcc": {
+                        "mode": "chose",
+                        "items": []
+                    },
+                    "account": {
+                        "label": "Gmail (sakurafhnw@gmail.com)"
+                    },
+                    "attachments": {
+                        "mode": "chose",
+                        "items": [
+                            "undefined"
+                        ]
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "account",
+                        "type": "account",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "from",
+                        "type": "text",
+                        "label": "From"
+                    },
+                    {
+                        "name": "to",
+                        "spec": {
+                            "name": " ",
+                            "type": "email",
+                            "label": "Email address",
+                            "required": true
+                        },
+                        "type": "array",
+                        "label": "To",
+                        "labels": {
+                            "add": "Add a recipient",
+                            "edit": "Edit a recipient"
+                        },
+                        "required": true
+                    },
+                    {
+                        "name": "subject",
+                        "type": "text",
+                        "label": "Subject"
+                    },
+                    {
+                        "name": "html",
+                        "type": "text",
+                        "label": "Content"
+                    },
+                    {
+                        "name": "attachments",
+                        "spec": [
+                            {
+                                "name": "fileName",
+                                "type": "filename",
+                                "label": "File name",
+                                "required": true,
+                                "semantic": "file:name"
+                            },
+                            {
+                                "name": "data",
+                                "type": "buffer",
+                                "label": "Data",
+                                "required": true,
+                                "semantic": "file:data"
+                            },
+                            {
+                                "name": "cid",
+                                "type": "text",
+                                "label": "Content-ID"
+                            }
+                        ],
+                        "type": "array",
+                        "label": "Attachments",
+                        "labels": {
+                            "add": "Add an attachment",
+                            "edit": "Edit an attachment"
+                        }
+                    },
+                    {
+                        "name": "cc",
+                        "spec": {
+                            "type": "email",
+                            "label": "Email address"
+                        },
+                        "type": "array",
+                        "label": "Copy recipient",
+                        "labels": {
+                            "add": "Add a copy recipient",
+                            "edit": "Edit a copy recipient"
+                        }
+                    },
+                    {
+                        "name": "bcc",
+                        "spec": {
+                            "type": "email",
+                            "label": "Email address"
+                        },
+                        "type": "array",
+                        "label": "Blind copy recipient",
+                        "labels": {
+                            "add": "Add a blind copy recipient",
+                            "edit": "Edit a blind copy recipient"
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "metadata": {
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 3,
+            "autoCommit": false,
+            "sequential": false,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false
+        },
+        "designer": {
+            "orphans": []
+        },
+        "zone": "eu1.integromat.com"
+    }
+}
